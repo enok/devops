@@ -1,0 +1,44 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: Garantindo /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+      with_items:
+        - 192.168.1.10 tools tools.devops.com.br
+
+    - name: Garantindo o dominio
+      lineinfile:
+      path: /etc/resolv.conf
+      line: "{{ item }}"
+      with_items:
+        - nameserver 8.8.8.8
+        - nameserver 8.8.4.4
+        - search devops.com.br
+        - domain devops.com.br
+
+    - name: Instalacao das dependencias do Docker-Engine
+    apt:
+      name:{{ item }}
+      update_cache: yes
+      state: present
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+    - name: Incluir o repositorio do Docker Engine
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+      state: present
+
+    - name: Inclusao da chave do repositorio do Docker-Engine
+    apt_key: url="https://download.docker.com/linux/ubuntu/gpg" state=present
+
+    - name: Instalar o Docker-Engine
+    apt: name=docker-ce update_cache=yes state=present
