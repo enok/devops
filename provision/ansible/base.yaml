@@ -10,6 +10,10 @@
         line: "{{ item }}"
       with_items:
         - 192.168.1.10 tools tools.devops.com.br
+        - 192.168.1.20 dev dev.devops.com.br
+        - 192.168.1.30 qa qa.devops.com.br
+        - 192.168.1.40 prod prod.devops.com.br
+        - 192.168.1.50 monitoring monitoring.devops.com.br
 
     - name: Garantindo o dominio
       lineinfile:
