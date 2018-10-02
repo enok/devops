@@ -37,6 +37,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ansible.become_user        = 'root'
         ansible.compatibility_mode = '2.0'
       end
+      srv.vm.provision 'ansible_local' do |ansible|
+        ansible.playbook           = env['provision_specific']
+        ansible.install_mode       = 'pip'
+        ansible.become             = true
+        ansible.become_user        = 'root'
+        ansible.compatibility_mode = '2.0'
+      end
     end
   end
 end

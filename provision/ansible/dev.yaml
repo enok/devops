@@ -1,0 +1,10 @@
+---
+- hosts: dev
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    # Produtct
+    - name: Executando o script [ Product ]
+      command: ls ~
+
